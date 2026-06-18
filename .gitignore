@@ -1,8 +1,6 @@
-# 仅提交 .claude/skills 文件夹，忽略仓库内其它所有内容
+# 仅提交 skills 文件夹，忽略仓库内其它所有内容
 /*
-!.claude/
-.claude/*
-!.claude/skills/
+!skills/
 
 # 通用忽略
 .DS_Store
