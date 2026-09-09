@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "test_name": "LLM 综合能力评测",
+    "test_date": "YYYY-MM-DD",
+    "description": "被测模型三个方向的综合能力评测：信息能力和表达、逻辑编程测试、文章编写测试。把本文件里的示例题目替换成你的题目即可。题目可选字段 allow_search: true 表示该题作答时允许调用 tavily 联网检索公开信息（通常用于信息检索类题目），省略或 false 则禁止联网。"
+  },
+  "questions": [
+    {
+      "id": "info-1",
+      "direction": "info_expression",
+      "title": "信息提取与转述",
+      "prompt": "【写清发给被测模型的题目全文。注意：这个字段是作答 subagent 唯一能看到的内容，不要在这里写参考答案。】",
+      "allow_search": true
+    },
+    {
+      "id": "logic-1",
+      "direction": "logic_programming",
+      "title": "编程题示例",
+      "prompt": "【写清编程题目、输入输出要求、限制条件】"
+    },
+    {
+      "id": "writing-1",
+      "direction": "article_writing",
+      "title": "文章题示例",
+      "prompt": "【写清写作题目、字数、结构要求】"
+    }
+  ]
+}
