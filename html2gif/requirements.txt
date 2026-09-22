@@ -1,0 +1,6 @@
+# 运行时依赖
+playwright>=1.40
+pillow>=10.0
+
+# 测试依赖
+pytest>=8.0
