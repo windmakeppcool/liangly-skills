@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "MURDOKU 盘面解析结果",
+    "description": "阶段2 的大模型补全产物，阶段2.5 由 validate 子命令校验，阶段3 推理消费。字段语义与校验规则详见 docs/2026-09-29-murdoku-v2-design.md 第7、8节。",
+    "type": "object",
+    "required": ["source_image", "grid", "victim", "global_clues",
+                 "suspects", "cells", "rooms", "resolution_notes"],
+    "properties": {
+        "source_image": {"type": "string", "description": "原始截图路径"},
+        "title": {"type": "string", "description": "案件标题，如「白色婚礼」"},
+        "grid": {"type": "integer", "description": "棋盘边长，当前为 9"},
+        "victim": {"type": "string", "description": "被害者姓名"},
+        "global_clues": {
+            "type": "array", "items": {"type": "string"},
+            "description": "通用线索原文"
+        },
+        "suspects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["name", "gender", "clue"],
+                "properties": {
+                    "name": {"type": "string"},
+                    "gender": {"enum": ["M", "F", "?"]},
+                    "clue": {"type": "string", "description": "该嫌疑人的线索原文"}
+                }
+            }
+        },
+        "cells": {
+            "type": "object",
+            "description": "键为格坐标 R{行}C{列}，须覆盖 grid×grid 全部格子",
+            "additionalProperties": {
+                "type": "object",
+                "required": ["element", "can_place", "room_id"],
+                "properties": {
+                    "element": {"type": "string", "description": "必须存在于元素库"},
+                    "can_place": {"type": ["boolean", "null"],
+                                  "description": "须与元素库一致；null 表示可用性未收录"},
+                    "room_id": {"type": ["integer", "string", "null"]},
+                    "room_name": {"type": ["string", "null"]}
+                }
+            }
+        },
+        "rooms": {
+            "type": "object",
+            "description": "键为 room_id。每个房间的格子须四邻接连通，且与 cells 互为逆映射",
+            "additionalProperties": {
+                "type": "object",
+                "required": ["name", "cells"],
+                "properties": {
+                    "name": {"type": ["string", "null"]},
+                    "cells": {"type": "array", "items": {"type": "string"}}
+                }
+            }
+        },
+        "resolution_notes": {
+            "type": "array", "items": {"type": "string"},
+            "description": "强制字段：每个由大模型补全的判断都要写清依据（看了哪张图、看到了什么、为什么这么判）"
+        }
+    }
+}
